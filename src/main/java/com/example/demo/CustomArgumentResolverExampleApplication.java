@@ -20,6 +20,7 @@ public class CustomArgumentResolverExampleApplication implements CommandLineRunn
 
 	@Override
 	public void run(String... args) throws Exception {
+		// keyIndex, owner 저장(1, 'user'+1)
 		for (int i = 1; i < 30; i++) {
 			this.repository.save(new AEntity((long) i, "user" + i));
 		}

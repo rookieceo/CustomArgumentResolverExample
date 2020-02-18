@@ -17,23 +17,23 @@ public class AController {
 	@Autowired
 	private AService service;
 
-	// Step1 - 일반 PathVariable 활용 로직
+	// Step1 - 원래 API : PathVariable Uri를 활용하여 A DTO 출력
 	@GetMapping(value = "/type1/{keyIndex}")
 	public ADTO type1API(@PathVariable("keyIndex") Long keyIndex) {
 		return this.service.getADTOByKeyIndex(keyIndex);
 	}
 
-	// Step2 - AuthorisedArgumentResolver를 활용하여 비교 로직 -1
+	// Step2 - 수정 1 권한 체크(ArgumentResolver) 추가 + AService 2번 호출
 	@GetMapping(value = "/type2/{keyIndex}")
 	public ADTO type2API(@Authorised("keyIndex") Long keyIndex) {
-		// AuthorisedArgumentResolver에서 호출된 AService.getADTOByKeyIndex이 다시 호출
+		// AuthorisedArgumentResolver에서 호출된 AService.getADTOByKeyIndex이 다시 호출됨
 		return this.service.getADTOByKeyIndex(keyIndex);
 	}
 
-	// Step3 - AuthorisedArgumentResolver를 활용하여 비교 로직 -2
+	// Step3 - 수정 2 권한 체크(ArgumentResolver) 추가 + AService 1번 호출
 	@GetMapping(value = "/type3/{keyIndex}")
 	public ADTO type3API(@Authorised("keyIndex") ADTO dto) {
-		// AuthorisedArgumentResolver에서 호출된 AService.getADTOByKeyIndex 1번만 호출
+		// AuthorisedArgumentResolver에서 호출된 AService.getADTOByKeyIndex 를 인자로 받아 이를 Json Result로 출력
 		return dto;
 	}
 
